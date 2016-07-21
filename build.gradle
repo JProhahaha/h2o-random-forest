@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'H2O Random Forest Project',
+                   'Implementation-Version': 1.0
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+		url "http://h2o-release.s3.amazonaws.com/h2o/rel-turin/4/maven/repo/"
+	}
+}
+
+def h2oProjectVersion = "3.8.3.4"
+
+dependencies {
+ 	compile ("ai.h2o:h2o-core:${h2oProjectVersion}") {
+ 		transitive = false
+ 	}
+	compile ("ai.h2o:h2o-algos:${h2oProjectVersion}") {
+		transitive = false
+	}
+	compile "ai.h2o:h2o-app:${h2oProjectVersion}"
+	compile "com.beust:jcommander:1.48"
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+task copyLibs(type: Copy) {
+	from configurations.compile
+	into 'build/libs/runtimeLibs'
+}
+
+// test {
+//     systemProperties 'property': 'value'
+// }
