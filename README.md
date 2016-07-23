@@ -19,7 +19,7 @@ This is merely a use case on building Random Forest models via the command line 
 This application uses Open Source components. You can find the source code of their open source projects along with license information below. I acknowledge and am grateful to these developers for their contributions to open source.  
 
 **h2o.ai:** https://github.com/h2oai  
-**License:** [Apache License 2.0](LICENSE.txt)  
+**License:** [Apache License 2.0](LICENSE)  
 
 **JCommander:** https://github.com/cbeust/jcommander  
-**License:** [Apache License 2.0](LICENSE.txt)
+**License:** [Apache License 2.0](LICENSE)
