@@ -1,3 +1,5 @@
+***Active Branch in Progress: dev***  
+
 # H2O.ai Distributed Random Forest in Java  
 This project was created for providing an example of extending H2O's machine learning Java API to build a Distributed Random Forest application that can be executed on the command line.  
 This is merely a use case on building Random Forest models via the command line using pure Java rather than using H2O's native client GUI, H2O Flow.  
