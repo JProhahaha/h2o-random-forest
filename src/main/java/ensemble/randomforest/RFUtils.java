@@ -5,6 +5,8 @@ import java.io.File;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
+import hex.tree.drf.DRF;
+import hex.tree.drf.DRFModel;
 import hex.tree.drf.DRFModel.DRFParameters;
 import water.H2OApp;
 import water.Key;
@@ -85,5 +87,18 @@ public class RFUtils {
 		params._ntrees = cliArgs.nTrees;
 
 		return params;
+	}
+	
+	/**
+	 * Loads parameters and trains Random Forest model. This method creates a
+	 * block until the model is finished training.
+	 * 
+	 * @param params
+	 *            <code>DRFParameter</code> for Random Forest
+	 * @return <code>DRFModel</code> of trained Random Forest model
+	 */
+	public static DRFModel trainModel(DRFParameters params) {
+		DRF job = new DRF(params);
+		return job.trainModel().get();
 	}
 }

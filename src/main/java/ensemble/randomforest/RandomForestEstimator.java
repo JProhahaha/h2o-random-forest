@@ -1,5 +1,6 @@
 package ensemble.randomforest;
 
+import hex.tree.drf.DRFModel;
 import hex.tree.drf.DRFModel.DRFParameters;
 import water.H2O;
 import water.H2OApp;
@@ -30,6 +31,10 @@ public class RandomForestEstimator {
 
 		System.err.print("Creating DRF Parameters...");
 		DRFParameters drfParams = RFUtils.createDRFParams(cliArgs, dataFrame);
+		System.out.println("Done!");
+		
+		System.out.print("Training DRF Model...");
+		DRFModel model = RFUtils.trainModel(drfParams);
 		System.out.println("Done!");
 		
 		dataFrame.delete();
