@@ -5,6 +5,7 @@ import java.io.File;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
+import hex.tree.drf.DRFModel.DRFParameters;
 import water.H2OApp;
 import water.Key;
 import water.fvec.Frame;
@@ -40,6 +41,10 @@ public class RFUtils {
 				H2OApp.main(new String[] { "-h" });
 			}
 			
+			if(cliArgs.nTrees <= 0){
+				// TODO: Error handling for number of trees
+			}
+			
 			// Create h2o instance parameters
 			cliArgs.h2oParams = "-name DRF " // Default name for h2o instance
 					+ "-ga_opt_out yes " // opts out of using Google Analytics embedded in H2O
@@ -62,5 +67,23 @@ public class RFUtils {
 	public static Frame loadDataFrame(String inputFilePath) {
 		NFSFileVec nfs = NFSFileVec.make(new File(inputFilePath));
 		return ParseDataset.parse(Key.make("iris-data"), nfs._key);
+	}
+
+	/**
+	 * Create all the parameters that will be used for the Random Forest.
+	 * 
+	 * @param cliArgs
+	 *            command line arguments
+	 * @param df
+	 *            <code>Frame</code> of the data set
+	 * @return <code>DRFParameters</code> params for Random Forest
+	 */
+	public static DRFParameters createDRFParams(RFArguments cliArgs, Frame df) {
+		DRFParameters params = new DRFParameters();
+		params._train = df._key;
+		params._response_column = df.lastVecName();
+		params._ntrees = cliArgs.nTrees;
+
+		return params;
 	}
 }

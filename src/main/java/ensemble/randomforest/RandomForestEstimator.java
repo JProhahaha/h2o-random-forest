@@ -1,5 +1,6 @@
 package ensemble.randomforest;
 
+import hex.tree.drf.DRFModel.DRFParameters;
 import water.H2O;
 import water.H2OApp;
 import water.fvec.Frame;
@@ -27,6 +28,9 @@ public class RandomForestEstimator {
 		Frame dataFrame = RFUtils.loadDataFrame(cliArgs.inputFilePath);
 		System.out.println("Done!");
 
+		System.err.print("Creating DRF Parameters...");
+		DRFParameters drfParams = RFUtils.createDRFParams(cliArgs, dataFrame);
+		System.out.println("Done!");
 		
 		dataFrame.delete();
 		System.out.print("Shutting down H2O...");

@@ -25,4 +25,7 @@ public class RFArguments {
 	
 	@Parameter(names = "--h2o-quiet", description = "Used to avoid printing h2o logging to the console. (Default false)")
 	public boolean h2oQuiet = false;
+	
+	@Parameter(names = "--ntrees", description = "Number of trees for Random Forest.", required = true)
+	public int nTrees;
 }
