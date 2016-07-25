@@ -47,6 +47,10 @@ public class RFUtils {
 				// TODO: Error handling for number of trees
 			}
 			
+			if(cliArgs.modelName.isEmpty()){
+				// TODO: Error handling for empty string
+			}
+			
 			// Create h2o instance parameters
 			cliArgs.h2oParams = "-name DRF " // Default name for h2o instance
 					+ "-ga_opt_out yes " // opts out of using Google Analytics embedded in H2O
@@ -97,8 +101,8 @@ public class RFUtils {
 	 *            <code>DRFParameter</code> for Random Forest
 	 * @return <code>DRFModel</code> of trained Random Forest model
 	 */
-	public static DRFModel trainModel(DRFParameters params) {
-		DRF job = new DRF(params);
+	public static DRFModel trainModel(DRFParameters params, String modelName) {
+		DRF job = new DRF(params, Key.<DRFModel>make(modelName));
 		return job.trainModel().get();
 	}
 }

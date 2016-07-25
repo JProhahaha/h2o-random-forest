@@ -29,12 +29,12 @@ public class RandomForestEstimator {
 		Frame dataFrame = RFUtils.loadDataFrame(cliArgs.inputFilePath);
 		System.out.println("Done!");
 
-		System.err.print("Creating DRF Parameters...");
+		System.out.print("Creating DRF Parameters...");
 		DRFParameters drfParams = RFUtils.createDRFParams(cliArgs, dataFrame);
 		System.out.println("Done!");
 		
 		System.out.print("Training DRF Model...");
-		DRFModel model = RFUtils.trainModel(drfParams);
+		DRFModel model = RFUtils.trainModel(drfParams, cliArgs.modelName);
 		System.out.println("Done!");
 		
 		dataFrame.delete();
