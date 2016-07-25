@@ -6,6 +6,10 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
 import water.H2OApp;
+import water.Key;
+import water.fvec.Frame;
+import water.fvec.NFSFileVec;
+import water.parser.ParseDataset;
 
 /**
  * A collection of static helper methods for <code>RandomForestEstimator</code>.
@@ -37,14 +41,26 @@ public class RFUtils {
 			}
 			
 			// Create h2o instance parameters
-			cliArgs.h2oParams = "-name DRF "   		// Default name for h2o instance
-							  + "-ga-opt_out yes "	// opts out of using Google Analytics embedded in H2O
-							  + "-log_dir " + cliArgs.outputDir + File.separatorChar + "log " // log directory
-							  + (cliArgs.h2oQuiet ? "-quiet " : "") // Quiet mode for h2o console printing 
-							  + cliArgs.h2oParams; 	// Rest of user submitted params
+			cliArgs.h2oParams = "-name DRF " // Default name for h2o instance
+					+ "-ga_opt_out yes " // opts out of using Google Analytics embedded in H2O
+					+ "-log_dir " + cliArgs.outputDir + File.separatorChar + "log " // log directory
+					+ (cliArgs.h2oQuiet ? "-quiet " : "") // Quiet mode for h2o console printing
+					+ cliArgs.h2oParams; // Rest of user submitted params
 		} catch (ParameterException pe) {
 			throw new ParameterException(pe);
 		}
 		return cliArgs;
+	}
+
+	/**
+	 * Loads the data file into memory and parses into a <code>Frame</code>.
+	 * 
+	 * @param inputFilePath
+	 *            path to data file
+	 * @return <code>Frame</code> of parsed data
+	 */
+	public static Frame loadDataFrame(String inputFilePath) {
+		NFSFileVec nfs = NFSFileVec.make(new File(inputFilePath));
+		return ParseDataset.parse(Key.make("iris-data"), nfs._key);
 	}
 }
