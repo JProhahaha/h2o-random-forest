@@ -4,11 +4,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class RandomForestEstimatorTest {
-	public static String[] args;
-
+	private static String[] args;
+	private static String inputFilePath = "src\\test\\resources\\iris.data";
+	private static String outputDirPath = "testing-output";
+	
 	@BeforeClass
 	public static void setup(){
-		args = new String[] { "-h" };
+		args = new String[] { "--input", inputFilePath, "--output", outputDirPath, "--h2o-quiet", "--ntrees", "10"};
 	}
 	
 	@Test
