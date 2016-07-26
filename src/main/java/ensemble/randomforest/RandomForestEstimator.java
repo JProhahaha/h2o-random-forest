@@ -8,7 +8,7 @@ import water.fvec.Frame;
 
 /**
  * Estimator class for Random Forest. This class instantiates an instance of
- * <code>h2o.ai</code> and builds a Random Forest model to save as a Java POJO.
+ * <code>h2o.ai</code> and builds a Random Forest model to save as a POJO.
  * 
  * @author JP
  */
@@ -37,6 +37,11 @@ public class RandomForestEstimator {
 		DRFModel model = RFUtils.trainModel(drfParams, cliArgs.modelName);
 		System.out.println("Done!");
 		
+		System.out.print("Saving model to output file...");
+		RFUtils.saveModel(model, cliArgs.outputDir, cliArgs.modelName);
+		System.out.println("Done!");
+		
+		model.delete();
 		dataFrame.delete();
 		System.out.print("Shutting down H2O...");
 		H2O.orderlyShutdown();

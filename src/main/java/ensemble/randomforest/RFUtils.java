@@ -1,6 +1,8 @@
 package ensemble.randomforest;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -104,5 +106,26 @@ public class RFUtils {
 	public static DRFModel trainModel(DRFParameters params, String modelName) {
 		DRF job = new DRF(params, Key.<DRFModel>make(modelName));
 		return job.trainModel().get();
+	}
+	
+	/**
+	 * Saves Random Forest model to output file in the form of a POJO.
+	 * 
+	 * @param model
+	 *            trained Random Forest model
+	 * @param outputDir
+	 *            path to output directory
+	 * @param modelName
+	 *            name for model output file
+	 */
+	public static void saveModel(DRFModel model, String outputDir, String modelName) {
+		String modelFilePath = outputDir + File.separatorChar + modelName + ".model";
+		try {
+			FileOutputStream outputFile = new FileOutputStream(modelFilePath);
+			model.toJava(outputFile, false, true);
+			outputFile.close();
+		} catch (IOException e) {
+			System.err.println("Error writing model file: " + e.getMessage());
+		}
 	}
 }
