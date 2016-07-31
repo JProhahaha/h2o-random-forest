@@ -37,7 +37,8 @@ The following are instructions for building the dependencies that you need in or
   - [JCommander](http://jcommander.org/) - Main website
       + [GitHub](https://github.com/cbeust/jcommander) - Source code
       + [Google Groups](https://groups.google.com/forum/#!forum/jcommander)
-
+  - Data set for this example was from UC Irvine Machine Learning Repository
+      + [Iris Data Set](https://archive.ics.uci.edu/ml/datasets/Iris)
 
 ### Credit  
 This application uses Open Source components. You can find the source code of their open source projects along with license information below. I acknowledge and am grateful to these developers for their contributions to open source.  
