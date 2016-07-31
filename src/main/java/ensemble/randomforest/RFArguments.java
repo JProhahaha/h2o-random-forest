@@ -29,6 +29,9 @@ public class RFArguments {
 	@Parameter(names = "--ntrees", description = "Number of trees for Random Forest.", required = true)
 	public int nTrees;
 	
+	@Parameter(names = "--max-depth", description = "Maximum depth per tree. (Default 20)")
+	public int maxDepth = 20;
+	
 	@Parameter(names = "--model-name", description = "Name to give to the trained output model without a file extension. (Default drf)")
 	public String modelName = "drf";
 }
