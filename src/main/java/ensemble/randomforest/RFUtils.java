@@ -30,38 +30,41 @@ public class RFUtils {
 	 * 
 	 * @param args
 	 *            <code>String</code> array of arguments from the command line
+	 * 
+	 * @see ensemble.randomforest.RFArguments RFArguments
 	 * @return instance of <code>RFArguments</code>
+	 * @throws Exception, ParameterException 
 	 */
-	public static RFArguments parseRFArguments(String[] args) {
+	public static RFArguments parseRFArguments(String[] args) throws Exception, ParameterException{
 		RFArguments cliArgs = new RFArguments();
 
-		try {
-			JCommander jc = new JCommander(cliArgs, args);
-			if (cliArgs.help) {
-				jc.usage();
-				return cliArgs;
-			} else if (cliArgs.h2oHelp) {
-				// H2O will exit upon displaying usage
-				H2OApp.main(new String[] { "-h" });
-			}
-			
-			if(cliArgs.nTrees <= 0){
-				// TODO: Error handling for number of trees
-			}
-			
-			if(cliArgs.modelName.isEmpty()){
-				// TODO: Error handling for empty string
-			}
-			
-			// Create h2o instance parameters
-			cliArgs.h2oParams = "-name DRF " // Default name for h2o instance
-					+ "-ga_opt_out yes " // opts out of using Google Analytics embedded in H2O
-					+ "-log_dir " + cliArgs.outputDir + File.separatorChar + "log " // log directory
-					+ (cliArgs.h2oQuiet ? "-quiet " : "") // Quiet mode for h2o console printing
-					+ cliArgs.h2oParams; // Rest of user submitted params
-		} catch (ParameterException pe) {
-			throw new ParameterException(pe);
+	
+		JCommander jc = new JCommander(cliArgs, args);
+		if (cliArgs.help) {
+			jc.usage();
+			return cliArgs;
+		} else if (cliArgs.h2oHelp) {
+			// H2O will exit upon displaying usage
+			H2OApp.main(new String[] { "-h" });
 		}
+		if(cliArgs.nTrees <= 0){
+			throw new Exception("Number of trees required needs to be 1 or greater!");
+		}
+		if(cliArgs.maxDepth <= 0){
+			throw new Exception("Max depth required to be greater than 0!");
+		}
+		if(cliArgs.modelName.isEmpty()){
+			throw new Exception("Model name cannot be empty!");
+		}
+		
+		// Create h2o instance parameters
+		cliArgs.h2oParams = "-name DRF " // Default name for h2o instance
+				+ "-ga_opt_out yes " // opts out of using Google Analytics embedded in H2O
+				+ "-log_dir " + cliArgs.outputDir + File.separatorChar + "log " // log directory
+				+ (cliArgs.h2oQuiet ? "-quiet " : "") // Quiet mode for h2o console printing
+				+ (cliArgs.nThreads > 0 ? ("-nthreads " + String.valueOf(cliArgs.nThreads) + " ") : "")
+				+ cliArgs.h2oParams; // Rest of user submitted params
+	
 		return cliArgs;
 	}
 
@@ -74,11 +77,13 @@ public class RFUtils {
 	 */
 	public static Frame loadDataFrame(String inputFilePath) {
 		NFSFileVec nfs = NFSFileVec.make(new File(inputFilePath));
-		return ParseDataset.parse(Key.make("iris-data"), nfs._key);
+		return ParseDataset.parse(Key.make("dataset-key"), nfs._key);
 	}
 
 	/**
-	 * Create all the parameters that will be used for the Random Forest.
+	 * Create all the parameters that will be used for the Random Forest.<br>
+	 * This method assumes that the target class label (gold standard) is in the
+	 * last column of the data set.
 	 * 
 	 * @param cliArgs
 	 *            command line arguments
@@ -88,9 +93,10 @@ public class RFUtils {
 	 */
 	public static DRFParameters createDRFParams(RFArguments cliArgs, Frame df) {
 		DRFParameters params = new DRFParameters();
-		params._train = df._key;
-		params._response_column = df.lastVecName();
+		params._train = df._key; // Set the data frame key
+		params._response_column = df.lastVecName(); // Target class label
 		params._ntrees = cliArgs.nTrees;
+		params._max_depth = cliArgs.maxDepth;
 
 		return params;
 	}
