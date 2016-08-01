@@ -62,6 +62,7 @@ public class RFUtils {
 				+ "-ga_opt_out yes " // opts out of using Google Analytics embedded in H2O
 				+ "-log_dir " + cliArgs.outputDir + File.separatorChar + "log " // log directory
 				+ (cliArgs.h2oQuiet ? "-quiet " : "") // Quiet mode for h2o console printing
+				+ (cliArgs.nThreads > 0 ? ("-nthreads " + String.valueOf(cliArgs.nThreads) + " ") : "")
 				+ cliArgs.h2oParams; // Rest of user submitted params
 	
 		return cliArgs;

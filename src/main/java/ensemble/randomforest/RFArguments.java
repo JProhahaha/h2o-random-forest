@@ -32,6 +32,9 @@ public class RFArguments {
 	@Parameter(names = "--max-depth", description = "Maximum depth per tree. (Default 20)")
 	public int maxDepth = 20;
 	
+	@Parameter(names = "--nthreads", description = "Number of threads to use with h2o. (Default All threads)")
+	public int nThreads;
+	
 	@Parameter(names = "--model-name", description = "Name to give to the trained output model without a file extension. (Default drf)")
 	public String modelName = "drf";
 }

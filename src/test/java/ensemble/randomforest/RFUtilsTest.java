@@ -50,13 +50,14 @@ public class RFUtilsTest {
 		RFArguments cliArgs = RFUtils.parseRFArguments(args);
 		assertTrue(cliArgs.help);
 		
-		args = new String[] { "-i", inputFilePath, "-o", outputDirPath, "--ntrees", "50", "--max-depth", "50", "--model-name", "my-model" };
+		args = new String[] { "-i", inputFilePath, "-o", outputDirPath, "--ntrees", "50", "--max-depth", "50", "--model-name", "my-model", "--nthreads", "1" };
 		cliArgs = RFUtils.parseRFArguments(args);
 		assertEquals(inputFilePath, cliArgs.inputFilePath);
 		assertEquals(outputDirPath, cliArgs.outputDir);
 		assertEquals(50, cliArgs.nTrees);
 		assertEquals(50, cliArgs.maxDepth);
 		assertEquals("my-model", cliArgs.modelName);
+		assertEquals(1, cliArgs.nThreads);
 	}
 
 	@Test(expected = Exception.class)
