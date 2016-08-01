@@ -7,7 +7,7 @@ This is merely a use case on building Random Forest models via the command line 
   - Java 7+
 
 ## Input File Format  
-Included data file for this example is the well known [iris.data](src/test/resources/iris.data) set. 
+Included data file for this example is the well-known [iris.data](src/test/resources/iris.data) set. 
 
   - CSV with Column Header
   - Target class label (Gold Standard) needs to be the last column
