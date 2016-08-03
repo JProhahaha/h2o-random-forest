@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import com.beust.jcommander.ParameterException;
 
+import hex.tree.drf.DRF;
 import hex.tree.drf.DRFModel;
 import hex.tree.drf.DRFModel.DRFParameters;
 import water.H2O;
@@ -137,6 +139,22 @@ public class RFUtilsTest {
 		RFUtils.saveModel(model, outputDirPath, "my-model");
 		
 		File file = new File(outputDirPath + File.separatorChar + "my-model.model");
+		assertTrue(file.isFile());
+	}
+	
+	@Test
+	public void testSaveTrainingMetrics() throws IOException {
+		DRFParameters params = new DRFParameters();
+		params._train = frame._key;
+		params._response_column = frame.lastVecName(); 
+		params._ntrees = 1;
+		params._max_depth = 5;
+		
+		DRF job = new DRF(params, Key.<DRFModel>make("my-model"));
+		DRFModel model = job.trainModel().get();
+		
+		RFUtils.saveTrainingMetrics(model, outputDirPath);
+		File file = new File(outputDirPath + File.separatorChar + "training-metrics.txt");
 		assertTrue(file.isFile());
 	}
 }

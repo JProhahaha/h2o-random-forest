@@ -2,6 +2,7 @@ package ensemble.randomforest;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import com.beust.jcommander.JCommander;
@@ -133,5 +134,27 @@ public class RFUtils {
 		} catch (IOException e) {
 			System.err.println("Error writing model file: " + e.getMessage());
 		}
+	}
+	
+	/**
+	 * Saves model training metrics from out-of-bag error analysis.
+	 * 
+	 * @param model
+	 *            <code>DRFModel</code> random forest model
+	 * @param outputDir
+	 *            path to output directory
+	 * @throws IOException
+	 *             throws if error when writing to the output file
+	 */
+	public static void saveTrainingMetrics(DRFModel model, String outputDir) throws IOException {
+			String outputPath = outputDir + File.separatorChar + "training-metrics.txt";
+			
+			try {
+				FileWriter fileStream = new FileWriter(new File(outputPath));
+				fileStream.write(model._output.toString());
+				fileStream.close();
+			} catch (IOException e) {
+				throw new IOException("Error when saving training metrics file");
+			}
 	}
 }

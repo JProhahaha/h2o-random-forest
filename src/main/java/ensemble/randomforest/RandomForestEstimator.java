@@ -23,7 +23,7 @@ public class RandomForestEstimator {
 			cliArgs = RFUtils.parseRFArguments(args);
 			// Exit program if help was requested
 			if (cliArgs.help)
-				System.exit(1);
+				System.exit(0);
 			
 			System.out.print("Starting h2o instance...");
 			H2OApp.main(cliArgs.h2oParams.split(" "));
@@ -44,6 +44,10 @@ public class RandomForestEstimator {
 			
 			System.out.print("Saving model to output file...");
 			RFUtils.saveModel(model, cliArgs.outputDir, cliArgs.modelName);
+			System.out.println("Done!");
+			
+			System.out.print("Saving training metrics to output file...");
+			RFUtils.saveTrainingMetrics(model, cliArgs.outputDir);
 			System.out.println("Done!");
 		} catch (ParameterException pe) {
 			System.out.println(pe.getLocalizedMessage());
